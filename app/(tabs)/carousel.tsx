@@ -6,10 +6,10 @@ const ProfilePictureCarousel = () => {
 
   // Array of image sources
   const images = [
-    require('./assets/image1.png'),
-    require('./assets/image2.png'),
-    require('./assets/image3.png'),
-    require('./assets/image4.png'),
+    require('../../assets/images/image1.png'),
+    require('../../assets/images/image2.png'),
+    require('../../assets/images/image3.png'),
+    require('../../assets/images/image1.png'),
   ];
 
   // Function to render each image item
