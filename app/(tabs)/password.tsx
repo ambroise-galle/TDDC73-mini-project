@@ -1,45 +1,61 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet, Animated } from 'react-native';
 
-interface PasswordStrengthIndicatorProps {
-  enableColorBar?: boolean; // Optional prop to enable or disable the password strength color bar
+interface StrengthResult {
+  level: string;
+  width: number;
+  color: string;
 }
 
-// PasswordStrengthIndicator component
+interface PasswordStrengthIndicatorProps {
+  enableColorBar?: boolean; // Whether to show the color bar
+  calculateStrength?: (input: string) => StrengthResult; // Custom strength calculation logic
+  forcedCharacters?: RegExp; // Characters that must be present
+  bannedCharacters?: RegExp; // Characters that must not be present
+}
+
+const defaultCalculateStrength = (
+  input: string,
+  forcedCharacters?: RegExp,
+  bannedCharacters?: RegExp
+): StrengthResult => {
+  if (bannedCharacters && bannedCharacters.test(input)) {
+    return { level: 'Invalid', width: 0, color: 'red' };
+  }
+  if (forcedCharacters && !forcedCharacters.test(input)) {
+    return { level: 'Missing Required Characters', width: 30, color: 'orange' };
+  }
+  if (input.length < 6) return { level: 'Weak', width: 30, color: 'red' };
+  if (input.length >= 6 && input.length < 12) return { level: 'Medium', width: 60, color: 'orange' };
+  if (input.length >= 12) return { level: 'Strong', width: 100, color: 'green' };
+  return { level: '', width: 0, color: '#ccc' };
+};
+
 const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   enableColorBar = true,
+  calculateStrength = defaultCalculateStrength,
+  forcedCharacters,
+  bannedCharacters,
 }) => {
-  const [password, setPassword] = useState(''); // State to track the input password
-  const [strength, setStrength] = useState(''); // State to store the calculated strength level (e.g., "Weak", "Medium", "Strong")
-  const [barWidth] = useState(new Animated.Value(0));   // Animated value for controlling the width of the color bar
-  const [barColor, setBarColor] = useState('#ccc'); // State for dynamically changing the color of the strength bar
+  const [password, setPassword] = useState('');
+  const [strength, setStrength] = useState('');
+  const [barWidth] = useState(new Animated.Value(0));
+  const [barColor, setBarColor] = useState('#ccc');
 
-  // Function to calculate password strength based on input length
-  const calculateStrength = (input: string) => {
-    if (input.length < 6) return { level: 'Weak', width: 30, color: 'red' };    // Weak: short passwords
-    if (input.length >= 6 && input.length < 12) return { level: 'Medium', width: 60, color: 'orange' }; // Medium: passwords of moderate length
-    if (input.length >= 12) return { level: 'Strong', width: 100, color: 'green' }; // Strong: longer passwords
-    return { level: '', width: 0, color: '#ccc' };  // Default case for empty or invalid input
-  };
-
-  // Function to handle changes in the password input field
   const handlePasswordChange = (input: string) => {
-    setPassword(input); // Update the password state with user input
+    setPassword(input);
 
-    // Calculate password strength properties (level, width, color)
-    const { level, width, color } = calculateStrength(input);
-    setStrength(level); // Update strength level (e.g., "Weak")
-    setBarColor(color); // Update bar color based on the strength level
+    const { level, width, color } = calculateStrength(input, forcedCharacters, bannedCharacters);
+    setStrength(level);
+    setBarColor(color);
 
-    // Animate the bar width to reflect the calculated strength level
     Animated.timing(barWidth, {
-      toValue: width,   // Target width based on calculated strength
-      duration: 300,    // Animation duration in milliseconds
-      useNativeDriver: false,   // Disable native driver because we're animating layout properties
+      toValue: width,
+      duration: 300,
+      useNativeDriver: false,
     }).start();
   };
 
-  // Component rendering
   return (
     <View style={styles.container}>
       <TextInput
@@ -72,7 +88,6 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   );
 };
 
-// Style definitions for the component
 const styles = StyleSheet.create({
   container: {
     padding: 20,
