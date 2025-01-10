@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet, Animated } from 'react-native';
 
-interface StrengthResult {
-  level: string;
-  width: number;
-  color: string;
-}
 
 interface PasswordStrengthIndicatorProps {
   enableColorBar?: boolean; // Whether to show the color bar
-  calculateStrength?: (input: string) => StrengthResult; // Custom strength calculation logic
+  calculateStrength?: (input: string) => {level: string; width: number; color: string}; // Custom strength calculation logic
 }
 
-const defaultCalculateStrength = (input: string): StrengthResult => {
+const defaultCalculateStrength = (input: string) => {
   if (input.length < 6) return { level: 'Weak', width: 30, color: 'red' };
   if (input.length >= 6 && input.length < 12) return { level: 'Medium', width: 60, color: 'orange' };
   if (input.length >= 12) return { level: 'Strong', width: 100, color: 'green' };
