@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet, Animated } from 'react-native';
 
+interface StrengthResult {
+  level: string;
+  width: number;
+  color: string;
+}
+
 interface PasswordStrengthIndicatorProps {
   enableColorBar?: boolean; // Whether to show the color bar
+  calculateStrength?: (input: string) => StrengthResult; // Custom strength calculation logic
 }
+
+const defaultCalculateStrength = (input: string): StrengthResult => {
+  if (input.length < 6) return { level: 'Weak', width: 30, color: 'red' };
+  if (input.length >= 6 && input.length < 12) return { level: 'Medium', width: 60, color: 'orange' };
+  if (input.length >= 12) return { level: 'Strong', width: 100, color: 'green' };
+  return { level: '', width: 0, color: '#ccc' };
+};
 
 const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   enableColorBar = true,
+  calculateStrength = defaultCalculateStrength,
 }) => {
   const [password, setPassword] = useState('');
   const [strength, setStrength] = useState('');
   const [barWidth] = useState(new Animated.Value(0));
   const [barColor, setBarColor] = useState('#ccc');
-
-  const calculateStrength = (input: string) => {
-    if (input.length < 6) return { level: 'Weak', width: 30, color: 'red' };
-    if (input.length >= 6 && input.length < 12) return { level: 'Medium', width: 60, color: 'orange' };
-    if (input.length >= 12) return { level: 'Strong', width: 100, color: 'green' };
-    return { level: '', width: 0, color: '#ccc' };
-  };
 
   const handlePasswordChange = (input: string) => {
     setPassword(input);

@@ -1,10 +1,27 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
-import PasswordStrengthIndicator from './passwordStrengh';
+import PasswordStrengthIndicator from './passwordStrength';
+
+interface StrengthResult {
+  level: string;
+  width: number;
+  color: string;
+}
+
+const customCalculateStrength = (input: string): StrengthResult => {
+  if (input.length < 8) return { level: 'Too Short', width: 20, color: 'red' };
+  if (input.length >= 8 && input.match(/[A-Z]/) && input.match(/[0-9]/)) {
+    return { level: 'Secure', width: 80, color: 'green' };
+  }
+  return { level: 'Average', width: 50, color: 'orange' };
+};
 
 const App = () => {
-  // Pass the enableColorBar prop as needed
-  return <PasswordStrengthIndicator enableColorBar={true} />;
+  return (
+    <PasswordStrengthIndicator
+      enableColorBar={true}
+      calculateStrength={customCalculateStrength}
+    />
+  );
 };
 
 export default App;
