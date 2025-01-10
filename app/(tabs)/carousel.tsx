@@ -1,110 +1,77 @@
 import React, { useState } from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  Dimensions,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-} from 'react-native';
+import { View, FlatList, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-const { width: screenWidth } = Dimensions.get('window');
+const ProfilePictureCarousel = () => {
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-interface CarouselItem {
-  title: string;
-  description: string;
-}
+  // Array of image sources
+  const images = [
+    require('./assets/image1.png'),
+    require('./assets/image2.png'),
+    require('./assets/image3.png'),
+    require('./assets/image4.png'),
+  ];
 
-const data: CarouselItem[] = [
-  { title: 'Strong Password Example', description: 'e.g., Abc#123!XY' },
-  { title: 'Use Special Characters', description: 'Include @, #, %, &, etc.' },
-  { title: 'Avoid Personal Info', description: 'Avoid birthdates or names.' },
-];
-
-const CarouselComponent: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Handle scroll events to determine the active item
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const newIndex = Math.round(contentOffsetX / screenWidth);
-    setCurrentIndex(newIndex);
-  };
+  // Function to render each image item
+  const renderItem = ({ item, index }: { item: any; index: number }) => (
+    <TouchableOpacity onPress={() => setSelectedImage(index)}>
+      <Image
+        source={item}
+        style={[
+          styles.image,
+          selectedImage === index && styles.selectedImage, // Add border if selected
+        ]}
+      />
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <ScrollView
+      <Text style={styles.title}>Choose Your Profile Picture</Text>
+      <FlatList
+        data={images}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
         horizontal
-        pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16} // Adjust scroll event frequency for smoother performance
-      >
-        {data.map((item, index) => (
-          <View style={styles.card} key={index}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.description}>{item.description}</Text>
-          </View>
-        ))}
-      </ScrollView>
-
-      {/* Pagination Dots */}
-      <View style={styles.pagination}>
-        {data.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.dot,
-              currentIndex === index ? styles.activeDot : {},
-            ]}
-          />
-        ))}
-      </View>
+        contentContainerStyle={styles.carouselContainer}
+      />
+      {selectedImage !== null && (
+        <Text style={styles.selectedText}>Selected Picture: {selectedImage + 1}</Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-  },
-  card: {
-    width: screenWidth,
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
-    marginHorizontal: 10,
+    alignItems: 'center',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  description: {
-    fontSize: 14,
-    color: '#555',
-    textAlign: 'center',
+  carouselContainer: {
+    paddingVertical: 10,
   },
-  pagination: {
-    flexDirection: 'row',
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginHorizontal: 10,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  selectedImage: {
+    borderColor: 'blue', // Highlight the selected image
+  },
+  selectedText: {
     marginTop: 10,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#ccc',
-    marginHorizontal: 5,
-  },
-  activeDot: {
-    backgroundColor: '#000',
+    fontSize: 16,
+    fontStyle: 'italic',
   },
 });
 
-export default CarouselComponent;
+export default ProfilePictureCarousel;

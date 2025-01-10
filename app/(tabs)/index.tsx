@@ -1,6 +1,7 @@
 import React from 'react';
 import PasswordStrengthIndicator from './password';
-import CarouselComponent from './carousel';
+import ProfilePictureCarousel from './carousel';
+import { View } from 'react-native';
 
 const customCalculateStrength = (input: string, forcedCharacters?: RegExp, bannedCharacters?: RegExp) => {
   if (bannedCharacters && bannedCharacters.test(input)) {
@@ -18,13 +19,15 @@ const customCalculateStrength = (input: string, forcedCharacters?: RegExp, banne
 
 const App = () => {
   return (
-    
-    <PasswordStrengthIndicator
-      enableColorBar={true}
-      calculateStrength={customCalculateStrength}
-      forcedCharacters={/[!@#$%^&*]/} // Require at least one special character
-      bannedCharacters={/[ ]/} // Disallow spaces
-    />
+    <View>
+      <ProfilePictureCarousel />
+      <PasswordStrengthIndicator
+        enableColorBar={true}
+        calculateStrength={customCalculateStrength}
+        forcedCharacters={/[!@#$%^&*]/} // Require at least one special character
+        bannedCharacters={/[ ]/} // Disallow spaces
+      />
+    </View>
   );
 };
 
