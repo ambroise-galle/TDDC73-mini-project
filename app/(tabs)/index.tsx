@@ -1,27 +1,41 @@
 import React from 'react';
+import { AppRegistry, StyleSheet } from 'react-native';
 import PasswordStrengthIndicator from './passwordStrength';
 
-const customCalculateStrength = (input: string, forcedCharacters?: RegExp, bannedCharacters?: RegExp) => {
-  if (bannedCharacters && bannedCharacters.test(input)) {
-    return { level: 'Invalid', width: 0, color: 'red' };
-  }
-  if (forcedCharacters && !forcedCharacters.test(input)) {
-    return { level: 'Missing Required Characters', width: 30, color: 'orange' };
-  }
-  if (input.length < 8) return { level: 'Too Short', width: 20, color: 'red' };
-  if (input.length >= 8 && input.match(/[A-Z]/) && input.match(/[0-9]/)) {
-    return { level: 'Secure', width: 80, color: 'green' };
-  }
-  return { level: 'Average', width: 50, color: 'orange' };
-};
+const customStyles = StyleSheet.create({
+  container: {
+    padding: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: 'red',
+  },
+  strengthBarContainer: {
+    height: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginBottom: 10,
+  },
+  strengthBar: {
+    height: '100%',
+  },
+  strengthText: {
+    fontSize: 16,
+  },
+});
 
 const App = () => {
   return (
     <PasswordStrengthIndicator
       enableColorBar={true}
-      calculateStrength={customCalculateStrength}
       forcedCharacters={/[!@#$%^&*]/} // Require at least one special character
       bannedCharacters={/[ ]/} // Disallow spaces
+      style={customStyles} // Pass custom styles
     />
   );
 };
