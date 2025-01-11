@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
     resizeMode: 'cover',
-    borderRadius: '50%',
   },
 });
 

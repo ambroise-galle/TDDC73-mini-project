@@ -12,7 +12,6 @@ const App = () => {
 
   return (
     <View style={styles.mainPage}>
-      <View style={{height: 100}}></View>
       <Carousel
         data={images}
         autoScroll={false}
@@ -45,6 +44,7 @@ const customImageStyle: ImageStyle = {
   width: 200,
   height: 200,
   resizeMode: 'cover',
+  borderRadius: '50%',
 };
 
 const styles = StyleSheet.create({
