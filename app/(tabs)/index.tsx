@@ -1,34 +1,90 @@
 import React from 'react';
+import { View, StyleSheet, ImageStyle, Alert, TouchableOpacity, Text } from 'react-native';
+import Carousel from './carousel';
 import PasswordStrengthIndicator from './password';
-import ProfilePictureCarousel from './carousel';
-import { View } from 'react-native';
-
-const customCalculateStrength = (input: string, forcedCharacters?: RegExp, bannedCharacters?: RegExp) => {
-  if (bannedCharacters && bannedCharacters.test(input)) {
-    return { level: 'Invalid', width: 0, color: 'red' };
-  }
-  if (forcedCharacters && !forcedCharacters.test(input)) {
-    return { level: 'Missing Required Characters', width: 30, color: 'orange' };
-  }
-  if (input.length < 8) return { level: 'Too Short', width: 20, color: 'red' };
-  if (input.length >= 8 && input.match(/[A-Z]/) && input.match(/[0-9]/)) {
-    return { level: 'Secure', width: 80, color: 'green' };
-  }
-  return { level: 'Average', width: 50, color: 'orange' };
-};
 
 const App = () => {
+  const images = [
+    { id: 1, uri: require('../../assets/images/image1.png') },
+    { id: 2, uri: require('../../assets/images/image3.png') },
+    { id: 3, uri: require('../../assets/images/image2.png') },
+  ];
+
   return (
-    <View>
-      <ProfilePictureCarousel />
-      <PasswordStrengthIndicator
-        enableColorBar={true}
-        calculateStrength={customCalculateStrength}
-        forcedCharacters={/[!@#$%^&*]/} // Require at least one special character
-        bannedCharacters={/[ ]/} // Disallow spaces
+    <View style={styles.mainPage}>
+      <View style={{height: 100}}></View>
+      <Carousel
+        data={images}
+        autoScroll={false}
+        autoScrollInterval={3000}
+        showIndicators={true}
+        imageStyle={customImageStyle}
       />
+      <PasswordStrengthIndicator
+      enableColorBar={true}
+      forcedCharacters={/[!@#$%^&*]/} // Require at least one special character
+      bannedCharacters={/[ ]/} // Disallow spaces
+      style={customStyles} // Pass custom styles
+      />
+      <View style={styles.buttonView}>
+        <TouchableOpacity style={styles.button} onPress={() => Alert.alert('Thank you for your registration!')}>
+          <Text style={styles.buttonText}>OK</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
+const customStyles = StyleSheet.create({
+  container: {
+    padding: 20,
+  },
+});
+
+const customImageStyle: ImageStyle = {
+  width: 200,
+  height: 200,
+  resizeMode: 'cover',
+};
+
+const styles = StyleSheet.create({
+  mainPage: {
+    // backgroundColor: 'white',
+  },
+  buttonView: {
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  button: {
+    backgroundColor: '#6200ea', // Purple background color
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  image: {
+    width: '100%',
+    height: 300,
+    resizeMode: 'cover',
+  },
+});
 
 export default App;

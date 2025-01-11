@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, Animated } from 'react-native';
+import { View, TextInput, Text, StyleSheet, Animated, TextStyle, ViewStyle } from 'react-native';
 
 interface StrengthResult {
   level: string;
@@ -12,6 +12,13 @@ interface PasswordStrengthIndicatorProps {
   calculateStrength?: (input: string) => StrengthResult; // Custom strength calculation logic
   forcedCharacters?: RegExp; // Characters that must be present
   bannedCharacters?: RegExp; // Characters that must not be present
+  style?: {
+    container?: ViewStyle; // Style for the main container
+    input?: TextStyle; // Style for the TextInput
+    strengthBarContainer?: ViewStyle; // Style for the strength bar container
+    strengthBar?: ViewStyle; // Style for the strength bar
+    strengthText?: TextStyle; // Style for the strength text
+  };
 }
 
 const defaultCalculateStrength = (
@@ -36,6 +43,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   calculateStrength = defaultCalculateStrength,
   forcedCharacters,
   bannedCharacters,
+  style = {},
 }) => {
   const [password, setPassword] = useState('');
   const [strength, setStrength] = useState('');
@@ -57,31 +65,27 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style.container]}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, style.input]}
         secureTextEntry
         placeholder="Enter your password"
         value={password}
         onChangeText={handlePasswordChange}
       />
       {enableColorBar && (
-        <View style={styles.barContainer}>
+        <View style={[styles.barContainer, style.strengthBarContainer]}>
           <Animated.View
             style={[
               styles.strengthBar,
-              {
-                width: barWidth.interpolate({
-                  inputRange: [0, 100],
-                  outputRange: ['0%', '100%'],
-                }),
-                backgroundColor: barColor,
-              },
+              style.strengthBar,
+              { width: barWidth.interpolate({ inputRange: [0, 100], outputRange: ['0%', '100%'] }) },
+              { backgroundColor: barColor },
             ]}
           />
         </View>
       )}
-      <Text style={styles.strengthText}>
+      <Text style={[styles.strengthText, style.strengthText]}>
         Strength: {strength}
       </Text>
     </View>
@@ -90,6 +94,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     padding: 20,
   },
   input: {

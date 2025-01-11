@@ -1,43 +1,84 @@
-import React, { useState } from 'react';
-import { View, FlatList, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { View, ScrollView, Dimensions, StyleSheet, Image, ImageStyle } from 'react-native';
 
-const ProfilePictureCarousel = () => {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+const { width } = Dimensions.get('window');
 
-  // Array of image sources
-  const images = [
-    require('../../assets/images/image1.png'),
-    require('../../assets/images/image2.png'),
-    require('../../assets/images/image3.png'),
-    require('../../assets/images/image1.png'),
-  ];
+type ImageItem = {
+  id: number;
+  uri: any;
+};
 
-  // Function to render each image item
-  const renderItem = ({ item, index }: { item: any; index: number }) => (
-    <TouchableOpacity onPress={() => setSelectedImage(index)}>
-      <Image
-        source={item}
-        style={[
-          styles.image,
-          selectedImage === index && styles.selectedImage, // Add border if selected
-        ]}
-      />
-    </TouchableOpacity>
-  );
+type CarouselProps = {
+  data: ImageItem[];
+  autoScroll?: boolean;
+  autoScrollInterval?: number;
+  showIndicators?: boolean;
+  imageStyle?: ImageStyle;
+};
+
+const Carousel: React.FC<CarouselProps> = ({
+  data = [],
+  autoScroll = false,
+  autoScrollInterval = 3000,
+  showIndicators = true,
+  imageStyle,
+}) => {
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | undefined;
+    if (autoScroll) {
+      timer = setInterval(() => {
+        scrollToNext();
+      }, autoScrollInterval);
+    }
+    return () => clearInterval(timer);
+  }, [autoScroll, autoScrollInterval, currentIndex]);
+
+  const scrollToNext = useCallback(() => {
+    const nextIndex = (currentIndex + 1) % data.length;
+    scrollViewRef.current?.scrollTo({
+      x: nextIndex * width,
+      animated: true,
+    });
+    setCurrentIndex(nextIndex);
+  }, [currentIndex, data.length]);
+
+  const handleScroll = useCallback((event: any) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const newIndex = Math.round(contentOffsetX / width);
+    setCurrentIndex(newIndex);
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose Your Profile Picture</Text>
-      <FlatList
-        data={images}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+      <ScrollView
+        ref={scrollViewRef}
         horizontal
+        pagingEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.carouselContainer}
-      />
-      {selectedImage !== null && (
-        <Text style={styles.selectedText}>Selected Picture: {selectedImage + 1}</Text>
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+      >
+        {data.map((item) => (
+          <View key={item.id} style={[styles.itemContainer, { width }]}>
+            <Image source={item.uri} style={[styles.image, imageStyle]} />
+          </View>
+        ))}
+      </ScrollView>
+      {showIndicators && (
+        <View style={styles.indicatorContainer}>
+          {data.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.indicator,
+                index === currentIndex ? styles.activeIndicator : null,
+              ]}
+            />
+          ))}
+        </View>
       )}
     </View>
   );
@@ -45,33 +86,35 @@ const ProfilePictureCarousel = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    position: 'relative',
+    paddingTop: 10,
+  },
+  itemContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  indicatorContainer: {
+    flexDirection: 'row',
+    position: 'relative',
+    bottom: 0,
+    alignSelf: 'center',
   },
-  carouselContainer: {
-    paddingVertical: 10,
+  indicator: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: '#ccc',
+    margin: 5,
+  },
+  activeIndicator: {
+    backgroundColor: '#000',
   },
   image: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginHorizontal: 10,
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  selectedImage: {
-    borderColor: 'blue', // Highlight the selected image
-  },
-  selectedText: {
-    marginTop: 10,
-    fontSize: 16,
-    fontStyle: 'italic',
+    width: '100%',
+    height: 300,
+    resizeMode: 'cover',
+    borderRadius: '50%',
   },
 });
 
-export default ProfilePictureCarousel;
+export default Carousel;
