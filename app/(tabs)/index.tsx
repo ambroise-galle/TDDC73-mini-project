@@ -45,6 +45,7 @@ const customImageStyle: ImageStyle = {
   height: 200,
   resizeMode: 'cover',
   borderRadius: '50%',
+  padding: 20,
 };
 
 const styles = StyleSheet.create({
