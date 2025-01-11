@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { View, ScrollView, Dimensions, StyleSheet, Image, ImageStyle } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, ImageStyle, ViewStyle, LayoutChangeEvent } from 'react-native';
 
-const { width } = Dimensions.get('window');
+//const { width } = Dimensions.get('window');
 
 type ImageItem = {
   id: number;
@@ -14,6 +14,7 @@ type CarouselProps = {
   autoScrollInterval?: number;
   showIndicators?: boolean;
   imageStyle?: ImageStyle;
+  style?: ViewStyle;
 };
 
 const Carousel: React.FC<CarouselProps> = ({
@@ -22,9 +23,11 @@ const Carousel: React.FC<CarouselProps> = ({
   autoScrollInterval = 3000,
   showIndicators = true,
   imageStyle,
+  style,
 }) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemWidth, setItemWidth] = useState(0);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
@@ -39,20 +42,25 @@ const Carousel: React.FC<CarouselProps> = ({
   const scrollToNext = useCallback(() => {
     const nextIndex = (currentIndex + 1) % data.length;
     scrollViewRef.current?.scrollTo({
-      x: nextIndex * width,
+      x: nextIndex * itemWidth,
       animated: true,
     });
     setCurrentIndex(nextIndex);
-  }, [currentIndex, data.length]);
+  }, [currentIndex, data.length, itemWidth]);
 
   const handleScroll = useCallback((event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const newIndex = Math.round(contentOffsetX / width);
+    const newIndex = Math.round(contentOffsetX / itemWidth);
     setCurrentIndex(newIndex);
-  }, []);
+  }, [itemWidth]);
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { width } = event.nativeEvent.layout;
+    setItemWidth(width);
+  };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]} onLayout={handleLayout}>
       <ScrollView
         ref={scrollViewRef}
         horizontal
@@ -61,8 +69,8 @@ const Carousel: React.FC<CarouselProps> = ({
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
-        {data.map((item) => (
-          <View key={item.id} style={[styles.itemContainer, { width }]}>
+        {data.map((item, index) => (
+          <View key={item.id} style={[styles.itemContainer, { width: itemWidth }]}>
             <Image source={item.uri} style={[styles.image, imageStyle]} />
           </View>
         ))}

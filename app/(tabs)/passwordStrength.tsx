@@ -9,7 +9,7 @@ interface StrengthResult {
 
 interface PasswordStrengthIndicatorProps {
   enableColorBar?: boolean; // Whether to show the color bar
-  calculateStrength?: (input: string) => StrengthResult; // Custom strength calculation logic
+  calculateStrength?: (input: string, forcedCharacters?: RegExp, bannedCharacters?: RegExp) => StrengthResult; // Custom strength calculation logic
   forcedCharacters?: RegExp; // Characters that must be present
   bannedCharacters?: RegExp; // Characters that must not be present
   style?: {
@@ -19,6 +19,7 @@ interface PasswordStrengthIndicatorProps {
     strengthBar?: ViewStyle; // Style for the strength bar
     strengthText?: TextStyle; // Style for the strength text
   };
+  placeholderTextColor?: string;
 }
 
 const defaultCalculateStrength = (
@@ -44,6 +45,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   forcedCharacters,
   bannedCharacters,
   style = {},
+  placeholderTextColor = '#ccc',
 }) => {
   const [password, setPassword] = useState('');
   const [strength, setStrength] = useState('');
@@ -70,11 +72,12 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
         style={[styles.input, style.input]}
         secureTextEntry
         placeholder="Enter your password"
+        placeholderTextColor={placeholderTextColor}
         value={password}
         onChangeText={handlePasswordChange}
       />
       {enableColorBar && (
-        <View style={[styles.barContainer, style.strengthBarContainer]}>
+        <View style={[styles.strengthBarContainer, style.strengthBarContainer]}>
           <Animated.View
             style={[
               styles.strengthBar,
@@ -94,7 +97,6 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
   },
   input: {
     borderWidth: 1,
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
-  barContainer: {
+  strengthBarContainer: {
     height: 10,
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
