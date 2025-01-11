@@ -1,91 +1,100 @@
 import React from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native';
-import Carousel from './carousel';
-import PasswordStrengthIndicator from './passwordStrength';
+import { View, StyleSheet, ImageStyle, Alert, TouchableOpacity, Text } from 'react-native';
+import Carousel from './carousel'; // Importing the Carousel component
+import PasswordStrengthIndicator from './passwordStrength'; // Importing the PasswordStrengthIndicator component
 
 const App = () => {
+  // Array of image objects to be displayed in the Carousel
   const images = [
-    { id: 1, uri: require('../../assets/images/image1.png') },
-    { id: 2, uri: require('../../assets/images/image2.png') },
-    { id: 3, uri: require('../../assets/images/image3.png') },
+    { id: 1, uri: require('../../assets/images/image1.png') }, // First image
+    { id: 2, uri: require('../../assets/images/image3.png') }, // Second image
+    { id: 3, uri: require('../../assets/images/image2.png') }, // Third image
   ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Choose your profile picture</Text>
+    <View style={styles.mainPage}> {/* Main container of the app */}
+      {/* Carousel component to display images */}
       <Carousel
-        data={images}
-        showIndicators={true}
-        imageStyle={styles.carouselImage}
+        data={images} // Pass the images array as data
+        autoScroll={false} // Disable auto-scrolling
+        autoScrollInterval={3000} // Auto-scroll interval (not used here as autoScroll is false)
+        showIndicators={true} // Enable navigation indicators
+        imageStyle={customImageStyle} // Custom styles for images
       />
-      <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your username"
-        placeholderTextColor="#ccc"
-      />
+      
+      {/* PasswordStrengthIndicator component to assess password strength */}
       <PasswordStrengthIndicator
-        enableColorBar={true}
-        placeholderTextColor='#ccc'
-        style={{
-          container: styles.passwordContainer,
-          input: styles.input,
-          strengthBarContainer: styles.strengthBarContainer,
-          strengthBar: styles.strengthBar,
-          strengthText: styles.strengthText,
-        }}
+        enableColorBar={true} // Enable color bar for strength indication
+        forcedCharacters={/[!@#$%^&*]/} // Require at least one special character in the password
+        bannedCharacters={/[ ]/} // Disallow spaces in the password
+        style={customStyles} // Pass custom styles to the component
       />
+
+      {/* Button for user interaction */}
+      <View style={styles.buttonView}> {/* Container for the button */}
+        <TouchableOpacity
+          style={styles.button} // Button styles
+          onPress={() => Alert.alert('Thank you for your registration!')} // Show an alert on button press
+        >
+          <Text style={styles.buttonText}>OK</Text> {/* Button label */}
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const customStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#213555',
-    alignContent: 'center',
-    padding: 20,
+    padding: 20, // Add padding to the PasswordStrengthIndicator container
   },
-  title: {
-    color: '#fff',
-    fontSize: 24,
-    marginBottom: 20,
+});
+
+const customImageStyle: ImageStyle = {
+  width: 200, // Set a fixed width for images
+  height: 200, // Set a fixed height for images
+  resizeMode: 'cover', // Ensure the image covers the available space proportionally
+  borderRadius: '50%', // Make images circular
+  padding: 20, // Add padding around images
+};
+
+const styles = StyleSheet.create({
+  mainPage: {
+    // Main container styles (background color can be added if needed)
+    // backgroundColor: 'white',
   },
-  carouselImage: {
-    height: 200,
-    width: 200,
-    resizeMode: 'cover',
+  buttonView: {
+    padding: 20, // Add padding around the button
+    justifyContent: 'center', // Center the button vertically
+    alignItems: 'center', // Center the button horizontally
+    backgroundColor: '#f5f5f5', // Light gray background color
   },
-  inputContainer: {
-    width: '100%',
-    marginTop: 20,
+  button: {
+    backgroundColor: '#6200ea', // Purple background color for the button
+    paddingVertical: 15, // Vertical padding inside the button
+    paddingHorizontal: 30, // Horizontal padding inside the button
+    borderRadius: 10, // Rounded corners for the button
+    shadowColor: '#000', // Shadow color
+    shadowOffset: { width: 0, height: 4 }, // Shadow offset (downward)
+    shadowOpacity: 0.3, // Shadow opacity
+    shadowRadius: 4, // Shadow blur radius
+    elevation: 5, // Elevation for Android shadow
   },
-  input: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
-    color: '#fff',
+  buttonText: {
+    color: '#ffffff', // White text color
+    fontSize: 18, // Font size for the button label
+    fontWeight: '600', // Semi-bold font weight
+    textAlign: 'center', // Center the text horizontally
   },
-  passwordContainer: {
-    width: '100%',
+  slide: {
+    flex: 1, // Take up available space
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
+    backgroundColor: '#fff', // White background color
   },
-  strengthBarContainer: {
-    height: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    overflow: 'hidden',
-    marginBottom: 10,
-  },
-  strengthBar: {
-    height: '100%',
-  },
-  strengthText: {
-    fontSize: 16,
-    color: '#fff',
+  image: {
+    width: '100%', // Image width fills the container
+    height: 300, // Fixed height for the images
+    resizeMode: 'cover', // Ensure the image covers the available space proportionally
   },
 });
 
