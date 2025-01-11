@@ -80,7 +80,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
 
   return (
     <View style={[styles.container, style.container]}>
-      {/* Password input field */}
+      
       <TextInput
         style={[styles.input, style.input]} // Apply default and custom styles
         secureTextEntry // Hide password input
@@ -88,7 +88,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
         value={password} // Bind input value to state
         onChangeText={handlePasswordChange} // Handle text input changes
       />
-      {/* Optional strength bar */}
+      
       {enableColorBar && (
         <View style={[styles.barContainer, style.strengthBarContainer]}>
           <Animated.View
@@ -101,7 +101,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
           />
         </View>
       )}
-      {/* Display strength level text */}
+      
       <Text style={[styles.strengthText, style.strengthText]}>
         Strength: {strength}
       </Text>

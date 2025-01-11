@@ -12,8 +12,7 @@ const App = () => {
   ];
 
   return (
-    <View style={styles.mainPage}> {/* Main container of the app */}
-      {/* Carousel component to display images */}
+    <View style={styles.mainPage}> 
       <Carousel
         data={images} // Pass the images array as data
         autoScroll={false} // Disable auto-scrolling
@@ -22,7 +21,6 @@ const App = () => {
         imageStyle={customImageStyle} // Custom styles for images
       />
       
-      {/* PasswordStrengthIndicator component to assess password strength */}
       <PasswordStrengthIndicator
         enableColorBar={true} // Enable color bar for strength indication
         forcedCharacters={/[!@#$%^&*]/} // Require at least one special character in the password
@@ -30,13 +28,13 @@ const App = () => {
         style={customStyles} // Pass custom styles to the component
       />
 
-      {/* Button for user interaction */}
-      <View style={styles.buttonView}> {/* Container for the button */}
+      
+      <View style={styles.buttonView}> 
         <TouchableOpacity
           style={styles.button} // Button styles
           onPress={() => Alert.alert('Thank you for your registration!')} // Show an alert on button press
         >
-          <Text style={styles.buttonText}>OK</Text> {/* Button label */}
+          <Text style={styles.buttonText}>OK</Text> 
         </TouchableOpacity>
       </View>
     </View>
@@ -53,7 +51,7 @@ const customImageStyle: ImageStyle = {
   width: 200, // Set a fixed width for images
   height: 200, // Set a fixed height for images
   resizeMode: 'cover', // Ensure the image covers the available space proportionally
-  borderRadius: '50%', // Make images circular
+  //borderRadius: '50%', // Make images circular
   padding: 20, // Add padding around images
 };
 
