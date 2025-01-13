@@ -11,32 +11,48 @@ const App = () => {
     { id: 3, uri: require('../../assets/images/image2.png') }, // Third image
   ];
 
+  const customCalculateStrength = (input: string, forcedCharacters?: RegExp, bannedCharacters?: RegExp) => {
+    if (bannedCharacters && bannedCharacters.test(input)) {
+      return { level: 'Invalid', width: 0, color: 'red' };
+    }
+    if (forcedCharacters && !forcedCharacters.test(input)) {
+      return { level: 'Missing Required Characters: !@#$%^&*', width: 20, color: 'purple' };
+    }
+    if (input.length < 8) return { level: 'Too Short', width: 20, color: 'red' };
+    if (input.length >= 8 && input.match(/[A-Z]/) && input.match(/[0-9]/)) {
+      return { level: 'Secure', width: 100, color: 'green' };
+    }
+    return { level: 'Average', width: 50, color: 'orange' };
+  };
+  
+
   return (
-    <View style={styles.mainPage}> {/* Main container of the app */}
-      {/* Carousel component to display images */}
+    <View style={styles.mainPage}> 
+      
       <Carousel
-        data={images} // Pass the images array as data
-        autoScroll={false} // Disable auto-scrolling
-        autoScrollInterval={3000} // Auto-scroll interval (not used here as autoScroll is false)
-        showIndicators={true} // Enable navigation indicators
-        imageStyle={customImageStyle} // Custom styles for images
+        data={images} 
+        autoScroll={false} 
+        autoScrollInterval={3000} 
+        showIndicators={true} 
+        imageStyle={customImageStyle} 
       />
       
-      {/* PasswordStrengthIndicator component to assess password strength */}
+      
       <PasswordStrengthIndicator
-        enableColorBar={true} // Enable color bar for strength indication
-        forcedCharacters={/[!@#$%^&*]/} // Require at least one special character in the password
-        bannedCharacters={/[ ]/} // Disallow spaces in the password
-        style={customStyles} // Pass custom styles to the component
+        enableColorBar={true} 
+        forcedCharacters={/[!@#$%^&*]/} 
+        bannedCharacters={/[ ]/} 
+        calculateStrength={customCalculateStrength}
+        style={customStyles} 
       />
 
-      {/* Button for user interaction */}
-      <View style={styles.buttonView}> {/* Container for the button */}
+      
+      <View style={styles.buttonView}> 
         <TouchableOpacity
-          style={styles.button} // Button styles
-          onPress={() => Alert.alert('Thank you for your registration!')} // Show an alert on button press
+          style={styles.button} 
+          onPress={() => Alert.alert('Thank you for your registration!')} 
         >
-          <Text style={styles.buttonText}>OK</Text> {/* Button label */}
+          <Text style={styles.buttonText}>OK</Text> 
         </TouchableOpacity>
       </View>
     </View>
@@ -59,8 +75,6 @@ const customImageStyle: ImageStyle = {
 
 const styles = StyleSheet.create({
   mainPage: {
-    // Main container styles (background color can be added if needed)
-    // backgroundColor: 'white',
   },
   buttonView: {
     padding: 20, // Add padding around the button

@@ -71,7 +71,7 @@ const Carousel: React.FC<CarouselProps> = ({
 
   return (
     <View style={[styles.container, style]} onLayout={handleLayout}>
-      {/* Scrollable container for carousel items */}
+      
       <ScrollView
         ref={scrollViewRef} // Attach the ref to the ScrollView
         horizontal // Enable horizontal scrolling
@@ -80,14 +80,14 @@ const Carousel: React.FC<CarouselProps> = ({
         onScroll={handleScroll} // Handle scroll events to track the current index
         scrollEventThrottle={16} // Set the scroll event frequency (in ms)
       >
-        {/* Render each image item */}
+        
         {data.map((item, index) => (
-          <View key={item.id} style={[styles.itemContainer, { width: itemWidth }]}> {/* Adjust width dynamically */}
-            <Image source={item.uri} style={[styles.image, imageStyle]} /> {/* Display the image */}
+          <View key={item.id} style={[styles.itemContainer, { width: itemWidth }]}> 
+            <Image source={item.uri} style={[styles.image, imageStyle]} /> 
           </View>
         ))}
       </ScrollView>
-      {/* Navigation indicators */}
+      
       {showIndicators && (
         <View style={styles.indicatorContainer}>
           {data.map((_, index) => (
