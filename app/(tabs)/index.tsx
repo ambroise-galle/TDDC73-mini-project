@@ -3,6 +3,20 @@ import { View, StyleSheet, ImageStyle, Alert, TouchableOpacity, Text } from 'rea
 import Carousel from './carousel'; // Importing the Carousel component
 import PasswordStrengthIndicator from './passwordStrength'; // Importing the PasswordStrengthIndicator component
 
+const customCalculateStrength = (input: string, forcedCharacters?: RegExp, bannedCharacters?: RegExp) => {
+  if (bannedCharacters && bannedCharacters.test(input)) {
+    return { level: 'Invalid', width: 0, color: 'red' };
+  }
+  if (forcedCharacters && !forcedCharacters.test(input)) {
+    return { level: 'Missing Required Characters: !@#$%^&*', width: 20, color: 'purple' };
+  }
+  if (input.length < 8) return { level: 'Too Short', width: 20, color: 'red' };
+  if (input.length >= 8 && input.match(/[A-Z]/) && input.match(/[0-9]/)) {
+    return { level: 'Secure', width: 100, color: 'green' };
+  }
+  return { level: 'Average', width: 50, color: 'orange' };
+};
+
 const App = () => {
   // Array of image objects to be displayed in the Carousel
   const images = [
@@ -26,6 +40,7 @@ const App = () => {
         forcedCharacters={/[!@#$%^&*]/} // Require at least one special character in the password
         bannedCharacters={/[ ]/} // Disallow spaces in the password
         style={customStyles} // Pass custom styles to the component
+        calculateStrength={customCalculateStrength} // Custom password strength calculation
       />
 
       

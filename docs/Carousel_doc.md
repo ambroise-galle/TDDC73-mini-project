@@ -1,71 +1,145 @@
-# PasswordStrengthIndicator Component
+# Carousel Component Documentation
 
-The `PasswordStrengthIndicator` component provides a visual indicator of password strength based on user input. It includes a password input field, an optional color bar to represent strength, and a text label displaying the strength level.
+## Overview
+
+The `Carousel` component is a versatile and customizable image carousel for React Native applications. It allows you to display a series of images with optional auto-scrolling and navigation indicators.
 
 ## Props
 
-- **enableColorBar** (boolean): Whether to show the color bar. Default is `true`.
-- **calculateStrength** (function): Custom strength calculation logic. Takes a password string as an argument and returns a string indicating the strength. Default is `defaultCalculateStrength`.
-- **forcedCharacters** (RegExp): Characters that must be present in the password.
-- **bannedCharacters** (RegExp): Characters that must not be present in the password.
-- **style** (object): Custom styles for various elements of the component.
-    - **container** (ViewStyle): Style for the main container.
-    - **input** (TextStyle): Style for the TextInput.
-    - **strengthBarContainer** (ViewStyle): Style for the strength bar container.
-    - **strengthBar** (ViewStyle): Style for the strength bar.
-    - **strengthText** (TextStyle): Style for the strength text.
+### `data: ImageItem[]`
 
-## Default Strength Calculation Logic
+- **Type**: Array of `ImageItem`
+- **Required**: Yes
+- **Description**: An array of image items to display in the carousel. Each `ImageItem` should have an `id` and a `uri` for the image source.
 
-- If the password contains banned characters, the strength is "Invalid".
-- If the password is missing required characters, the strength is "Missing Required Characters".
-- If the password length is less than 6 characters, the strength is "Weak".
-- If the password length is between 6 and 12 characters, the strength is "Medium".
-- If the password length is 12 characters or more, the strength is "Strong".
+### `autoScroll: boolean`
+
+- **Type**: Boolean
+- **Required**: No
+- **Default**: `false`
+- **Description**: Determines whether the carousel should scroll automatically.
+
+### `autoScrollInterval: number`
+
+- **Type**: Number
+- **Required**: No
+- **Default**: `3000`
+- **Description**: The interval for auto-scrolling in milliseconds.
+
+### `showIndicators: boolean`
+
+- **Type**: Boolean
+- **Required**: No
+- **Default**: `true`
+- **Description**: Determines whether to show navigation indicators below the carousel.
+
+### `imageStyle: ImageStyle`
+
+- **Type**: Object
+- **Required**: No
+- **Description**: Custom styles for the images.
+
+### `style: ViewStyle`
+
+- **Type**: Object
+- **Required**: No
+- **Description**: Custom styles for the main container.
 
 ## Usage
 
-To use the `PasswordStrengthIndicator` component, import it into your project and include it in your JSX. You can customize its behavior and appearance using the available props.
-
-### Example
-
-```jsx
+```tsx
 import React from 'react';
-import { PasswordStrengthIndicator } from 'your-library';
+import { View } from 'react-native';
+import Carousel from './path/to/Carousel';
+
+const imageData = [
+    { id: 1, uri: require('./path/to/image1.jpg') },
+    { id: 2, uri: require('./path/to/image2.jpg') },
+    { id: 3, uri: require('./path/to/image3.jpg') },
+];
 
 const App = () => {
     return (
-        <PasswordStrengthIndicator
-            enableColorBar={true}
-            calculateStrength={customCalculateStrength}
-            forcedCharacters={/[A-Z]/}
-            bannedCharacters={/[!@#$%^&*]/}
-            style={{
-                container: { margin: 10 },
-                input: { borderColor: 'gray', borderWidth: 1 },
-                strengthBarContainer: { height: 5, marginTop: 5 },
-                strengthBar: { backgroundColor: 'green' },
-                strengthText: { fontSize: 12, color: 'black' },
-            }}
-        />
+        <View>
+            <Carousel
+                data={imageData}
+                autoScroll={true}
+                autoScrollInterval={5000}
+                showIndicators={true}
+                imageStyle={{ borderRadius: 10 }}
+                style={{ marginTop: 20 }}
+            />
+        </View>
     );
-};
-
-const customCalculateStrength = (password) => {
-    // Custom logic to calculate password strength
-    return 'Strong';
 };
 
 export default App;
 ```
 
+## Component Structure
 
-### Default Strength Calculation Logic
+### `ImageItem`
 
-The default strength calculation logic follows these rules:
+```ts
+type ImageItem = {
+    id: number;
+    uri: any;
+};
+```
 
-- If the password contains banned characters, the strength is "Invalid".
-- If the password is missing required characters, the strength is "Missing Required Characters".
-- If the password length is less than 6 characters, the strength is "Weak".
-- If the password length is between 6 and 12 characters, the strength is "Medium".
-- If the password length is 12 characters or more, the strength is "Strong".
+### `CarouselProps`
+
+```ts
+type CarouselProps = {
+    data: ImageItem[];
+    autoScroll?: boolean;
+    autoScrollInterval?: number;
+    showIndicators?: boolean;
+    imageStyle?: ImageStyle;
+    style?: ViewStyle;
+};
+```
+
+## Internal State and Refs
+
+- `scrollViewRef`: A reference to the `ScrollView` component.
+- `currentIndex`: Tracks the currently visible image index.
+- `itemWidth`: Tracks the width of each carousel item.
+
+## Functions
+
+### `scrollToNext`
+
+Scrolls to the next image in the carousel.
+
+### `handleScroll`
+
+Handles scroll events and updates the current index.
+
+### `handleLayout`
+
+Handles layout changes and calculates item width.
+
+## Styles
+
+- `container`: Ensures proper positioning of child elements.
+- `itemContainer`: Centers the image both vertically and horizontally.
+- `indicatorContainer`: Arranges indicators in a row and positions them relative to the container.
+- `indicator`: Default style for indicators.
+- `activeIndicator`: Style for the active indicator.
+- `image`: Styles for the images.
+
+## Example
+
+```tsx
+<Carousel
+    data={imageData}
+    autoScroll={true}
+    autoScrollInterval={3000}
+    showIndicators={true}
+    imageStyle={{ borderRadius: 10 }}
+    style={{ marginTop: 20 }}
+/>
+```
+
+This example demonstrates how to use the `Carousel` component with custom styles and auto-scrolling enabled.
