@@ -112,8 +112,6 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
 // Styles for the component
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20, // Add space at the top
-    padding: 20, // Add padding inside the container
   },
   input: {
     borderWidth: 1, // Border thickness
