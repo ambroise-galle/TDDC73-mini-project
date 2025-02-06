@@ -1,146 +1,86 @@
-<<<<<<< HEAD
 # TDDC73-project
 
+The project is based on independently exploring different Interaction patterns on a slightly deeper level and then creating your own SDK of two of the patterns. The project instructions consist of several different suggestions on what one can choose to delve into, it is up to you to choose information according to the grading criteria described below.
 
+### Project Instructions
+You should implement your own SDK consisting of:
 
-## Getting started
+### Grading Criteria
+Here, criteria are described for the different rating steps. Remember that it is not only quantitative differences between the levels but also qualitative.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+There is also an example project to be downloaded (based on Swing) [here](projectexample_tdc73_tdd13.zip) and a readme file [here](project-info.txt). The project is intended to correspond to the qualitative requirements for grade 5, so for lower grades, the exact same requirements for code quality do not apply. (Try writing "Hello" and "Hejsan".)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+#### Grade 3
+You shall properly implement two *Interaction patterns* using a framework of your choice. With a simple test program/application, you demonstrate how to use your component (interaction pattern). Note that there should be a clear difference between your general component and the test program.  
 
-## Add your files
+You choose which interaction patterns you want to implement and include in your SDK from [UI Patterns](http://ui-patterns.com/patterns). The patterns you choose should be non-trivial designs where you build most of the component yourself. You may not use pre-made components from your framework, but you may use smaller widgets like buttons. If unsure whether a pattern is too trivial, check with the course coordinator (Anders).  
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+For each interaction pattern, you must provide enough data to show how the pattern is supposed to work. You should build your solution (your two interaction patterns) as your own SDK. Consider the following:
 
-```
-cd existing_repo
-git remote add origin https://gitlab.liu.se/floch887/tddc73-project.git
-git branch -M main
-git push -uf origin main
-```
+- What are the common parts that your components share?
+- Are support components needed for your components to work?
+- How can the two components be used together?
 
-## Integrate with your tools
+Your code should be efficient enough to be used. The code should follow common conventions and be adequately commented.
 
-- [ ] [Set up project integrations](https://gitlab.liu.se/floch887/tddc73-project/-/settings/integrations)
+**Selection of Interaction Patterns**  
+Most patterns can be chosen, as long as you implement them yourself. For example, you can choose *Module Tabs*, but you may not use Android's SDK Tab to solve the task. Consider what other programmers might want to adapt when using your component. Look at how Android structures complex components like `ListView` or `ExpandableListView` (default models/adapters, renderers for appearance, customization options, etc.).  
 
-## Collaborate with your team
+Below are some examples of historically common patterns in the course, along with considerations:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- [Password Strength Meter](http://ui-patterns.com/patterns/PasswordStrengthMeter)
+  - How to replace the algorithm to determine password strength
+  - How to visualize password strength
 
-## Test and Deploy
+- [Carousel](http://ui-patterns.com/patterns/Carousel)
+  - How many elements should appear at the same time?
+  - How should each element appear, and can it be replaced?
 
-Use the built-in continuous integration in GitLab.
+- [Inplace Editor](http://ui-patterns.com/patterns/InplaceEditor)
+  - Which elements are editable, and how does this appear?
+  - Can the method of editing be replaced?
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- [Shopping Cart](http://ui-patterns.com/patterns/ShoppingCart)
+  - What does the shopping cart look like?
+  - Are there different views of the shopping cart (small, compact, full), and how do they look?
 
-***
+- Input feedback (similar to Password Strength Meter)
 
-# Editing this README
+- [Account Registration](http://ui-patterns.com/patterns/AccountRegistration)
+  - What data should be on an account (and what data types)?
+  - Which fields should be required?
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+- [Steps Left](http://ui-patterns.com/patterns/StepsLeft)
+  - How can steps be named?
+  - How do I connect information to each step (e.g., what should be seen at step 2)?
 
-## Suggestions for a good README
+#### Grade 4
+For grade 4, you must complete all the requirements for grade 3 and also implement one of the following:
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- *Getting started guide* for a framework of your choice
+- UI Testing for one of your components (see below)
 
-## Name
-Choose a self-explaining name for your project.
+#### Grade 5
+For grade 5, you must complete all the requirements for grade 3 and implement both:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- *Getting started guide* for a framework of your choice
+- UI Testing for one of your components (see below)
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Getting Started Guide
+You should write a *guide* for one of the following frameworks: Kotlin for Android, Flutter, or React Native.  
+Your guide should be aimed at programmers who are not familiar with your chosen framework. It should cover:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- Simple layout of components/widgets
+- Basic interaction with listeners/callback functions
+- Navigation between different screens
+- How to use your two components
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### UI Testing
+You must perform UI testing on one of the components you implemented. Use the recommended testing tools for your framework ([UI Testing](http://developer.android.com/tools/testing/testing_ui.html)).  
+Your tests do not need to be comprehensive, but you should demonstrate an understanding of how to conduct UI tests.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Result
+<img src="illustrations\project.gif" alt="Final project">
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
-=======
-# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
->>>>>>> c4ef3b8 (Initial commit)
+We decided to implement a special form of carousel and a password strength meter.
+There is a lot of props for each of the compenent in order to customize them according to your liking.
